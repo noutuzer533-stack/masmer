@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masmer.su - Оплата и подписка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c003e;
+            color: #fff;
+        }
+
+        /* Заголовок и кнопки */
+        header {
+            background-color: #4b0082;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+            color: #fff;
+        }
+
+        /* Кнопки "Техподдержка" и "О сайте" */
+        .header-button {
+            position: absolute;
+            top: 10px;
+            background-color: #ff00ff;
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .header-button:hover {
+            background-color: #ff00cc;
+        }
+
+        .support-button {
+            left: 10px;
+        }
+
+        .about-button {
+            left: 120px;
+        }
+
+        /* Стили для модального окна "О сайте" */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            color: #000;
+            padding: 30px;
+            width: 300px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            background-color: #ff00ff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .close-btn:hover {
+            background-color: #ff00cc;
+        }
+
+        /* Контейнеры для контента */
+        .content {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .price-option {
+            background-color: #3b0066;
+            border-radius: 10px;
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .price-option:hover {
+            transform: scale(1.05);
+        }
+
+        .price-option h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .price-option p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #7a00b6;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #6a0094;
+        }
+
+        .button:active {
+            background-color: #4b0082;
+        }
+
+        /* Стили для отображения карты при оплате через Сбербанк */
+        .card-info {
+            display: none;
+            background-color: #4b0082;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        /* Стили для формы пароля */
+        .password-form {
+            display: none;
+            background-color: #4b0082;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .password-form input {
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .download-link {
+            display: none;
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #4b0082;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="https://t.me/Masmerbust2" class="header-button support-button" target="_blank">Техподдержка</a>
+    <button class="header-button about-button" onclick="showAboutModal()">О сайте</button>
+    <h1>Вас приветствует сайт masmer.su</h1>
+</header>
+
+<!-- Модальное окно "О сайте" -->
+<div id="about-modal" class="modal">
+    <div class="modal-content">
+        <p>Всем привет! Вас приветствует сайт <strong>masmer.su</strong>.</p>
+        <p>Здесь продается софт. Так как я только начал, что-то может быть не так, так что сразу извините.</p>
+        <p>Коплю деньги, чтобы улучшать качество работы и коплю на новый девайс.</p>
+        <p>Всем удачи!</p>
+        <button class="close-btn" onclick="closeAboutModal()">Закрыть</button>
+    </div>
+</div>
+
+<div class="content">
+    <!-- 1 день -->
+    <div class="price-option" id="option-1">
+        <h2>1 день - 50 рублей</h2>
+        <p>Получите доступ на 1 день за 50 рублей</p>
+        <a href="https://funpay.com/lots/offer?id=59225094" target="_blank">
+            <button class="button">Оплатить через FanPay</button>
+        </a>
+        <button class="button" onclick="showPaymentConfirmation('1')">Оплатить через Сбербанк</button>
+        <div id="card-info-1" class="card-info">
+            <p>Номер карты: <strong>2202 2082 7085 9227</strong></p>
+            <p>Обязательно напишите на софт</p>
+        </div>
+        <div id="password-form-1" class="password-form">
+            <label for="password1">Введите пароль для доступа на 1 день:</label>
+            <input type="password" id="password1" placeholder="Введите пароль">
+            <button class="button" onclick="verifyPassword('password1', 'masmerbust1d', '1')">Подтвердить</button>
+            <p id="password-msg-1" style="color: #00ff00;"></p>
+        </div>
+        <div id="download-link-1" class="download-link">
+            <a href="/mnt/data/Mega%20Raname.zip" download>
+                <button class="button">Скачать файл</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- 10 дней -->
+    <div class="price-option" id="option-2">
+        <h2>10 дней - 250 рублей</h2>
+        <p>Получите доступ на 10 дней за 250 рублей</p>
+        <a href="https://funpay.com/lots/offer?id=59226017" target="_blank">
+            <button class="button">Оплатить через FanPay</button>
+        </a>
+        <button class="button" onclick="showPaymentConfirmation('2')">Оплатить через Сбербанк</button>
+        <div id="card-info-2" class="card-info">
+            <p>Номер карты: <strong>2202 2082 7085 9227</strong></p>
+            <p>Обязательно напишите на софт</p>
+        </div>
+        <div id="password-form-2" class="password-form">
+            <label for="password2">Введите пароль для доступа на 10 дней:</label>
+            <input type="password" id="password2" placeholder="Введите пароль">
+            <button class="button" onclick="verifyPassword('password2', 'masmerbust10dd', '2')">Подтвердить</button>
+            <p id="password-msg-2" style="color: #00ff00;"></p>
+        </div>
+        <div id="download-link-2" class="download-link">
+            <a href="/mnt/data/Mega%20Raname.zip" download>
+                <button class="button">Скачать файл</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- 30 дней -->
+    <div class="price-option" id="option-3">
+        <h2>30 дней - 600 рублей</h2>
+        <p>Получите доступ на 30 дней за 600 рублей</p>
+        <a href="https://funpay.com/lots/offerEdit?node=1099&offer=59226023" target="_blank">
+            <button class="button">Оплатить через FanPay</button>
+        </a>
+        <button class="button" onclick="showPaymentConfirmation('3')">Оплатить через Сбербанк</button>
+        <div id="card-info-3" class="card-info">
+            <p>Номер карты: <strong>2202 2082 7085 9227</strong></p>
+            <p>Обязательно напишите на софт</p>
+        </div>
+        <div id="password-form-3" class="password-form">
+            <label for="password3">Введите пароль для доступа на 30 дней:</label>
+            <input type="password" id="password3" placeholder="Введите пароль">
+            <button class="button" onclick="verifyPassword('password3', 'masmerbust30ddd', '3')">Подтвердить</button>
+            <p id="password-msg-3" style="color: #00ff00;"></p>
+        </div>
+        <div id="download-link-3" class="download-link">
+            <a href="/mnt/data/Mega%20Raname.zip" download>
+                <button class="button">Скачать файл</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 Masmer.su</p>
+</footer>
+
+<script>
+    // Функция для отображения модального окна "О сайте"
+    function showAboutModal() {
+        document.getElementById("about-modal").style.display = "flex";
+    }
+
+    // Функция для закрытия модального окна
+    function closeAboutModal() {
+        document.getElementById("about-modal").style.display = "none";
+    }
+
+    // Функция для отображения карты при оплате через Сбербанк
+    function showCardInfo(option) {
+        var cardInfo = document.getElementById("card-info-" + option);
+        cardInfo.style.display = "block";
+    }
+
+    // Функция для отображения формы для подтверждения оплаты
+    function showPaymentConfirmation(option) {
+        var passwordForm = document.getElementById("password-form-" + option);
+        var downloadLink = document.getElementById("download-link-" + option);
+        var cardInfo = document.getElementById("card-info-" + option);
+        var optionDiv = document.getElementById("option-" + option);
+
+        cardInfo.style.display = "block"; // Показать карту и текст
+        passwordForm.style.display = "block";
+        optionDiv.querySelector("button").style.display = "none"; // Скрыть кнопку оплаты
+    }
+
+    // Функция для проверки пароля
+    function verifyPassword(inputId, correctPassword, option) {
+        var password = document.getElementById(inputId).value;
+        var msgElement = document.getElementById("password-msg-" + option);
+
+        if (password === correctPassword) {
+            msgElement.textContent = "Пароль правильный! Доступ предоставлен.";
+            msgElement.style.color = "green";
+            document.getElementById("download-link-" + option).style.display = "block"; // Показываем кнопку скачать файл
+        } else {
+            msgElement.textContent = "Неправильный пароль. Попробуйте снова.";
+            msgElement.style.color = "red";
+        }
+    }
+</script>
+
+</body>
+</html>
